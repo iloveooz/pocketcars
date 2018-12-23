@@ -10,14 +10,14 @@
 	// chackpoints
 	const int num = 8;
 	int points[num][2] = { 
-		300, 610,
-		1270, 430,
-		1380, 2380,
-		1900, 2460,
-		1970, 1700,
-		2550, 1680,
-		2560, 3150,
-		500, 3300
+		300, 200,
+		660, 230,
+		720, 1260,
+		960, 1280,
+		980, 860,
+		1260, 850,
+		1260, 1530,
+		210, 1650
 	};
 	
 	struct Car {
@@ -53,7 +53,7 @@
 
 	int main() {
 		
-		sf::RenderWindow app(sf::VideoMode(640, 480), "ROCK'N'ROLL RACING (not BLIZZARD)");
+		sf::RenderWindow app(sf::VideoMode(960, 720), "ROCK'N'ROLL RACING (not BLIZZARD)");
 		
 		app.setFramerateLimit(60);
 		
