@@ -4,8 +4,11 @@
 	
 	#include <SFML/Graphics.hpp>
 	#include <cmath>
+	#include <string>
 
 	const int N = 5;
+	const int Weight = 640; // 960
+	const int Height = 480; // 720
 	
 	// chackpoints
 	const int num = 8;
@@ -21,10 +24,12 @@
 	};
 	
 	struct Car {
+		std::string name;
 		float x, y, speed, angle;
 		int n;
 		
 		Car() {
+			name = "car";
 			speed = 2.0;
 			angle = 0.0;
 			n = 0;
@@ -51,23 +56,46 @@
 		
 	};
 
+	struct Bullet {
+		std::string name;
+		float x, y, speed, angle;
+		
+		Bullet () {
+			name = "bullet";
+			speed = 6.0;
+			angle = 0.0;
+		}
+		
+	};
+
 	int main() {
 		
-		sf::RenderWindow app(sf::VideoMode(960, 720), "ROCK'N'ROLL RACING (not BLIZZARD)");
+		sf::RenderWindow app(sf::VideoMode(Weight, Height), "ROCK'N'ROLL RACING (not BLIZZARD)");
 		
 		app.setFramerateLimit(60);
 		
-		sf::Texture tBackground, tCar;
+		// загружаем текстуры
+		sf::Texture tBackground, tCar, tExplosion;
 		tBackground.loadFromFile("images/background.png");
 		tCar.loadFromFile("images/car.png");
+		tExplosion.loadFromFile("images/explosion.png");
 		
-		sf::Sprite sBackground(tBackground), sCar(tCar);
+		// создаем спрайты
+		sf::Sprite sBackground(tBackground);
+		sf::Sprite sCar(tCar);
+		sf::Sprite sExplosion(tExplosion);
+		
+		// параметры спрайтов
+		sExplosion.setPosition(300, 200);
 		sCar.setPosition(300, 300);
+		
+		
 		
 		// центр всех преобразований фигуры
 		sCar.setOrigin(22, 22);
 		
 		Car car[N];
+		
 		for (int i = 0; i < N; i++) {
 			car[i].x = 300 + i * 50;
 			car[i].y = 1700 + i * 80;
@@ -83,6 +111,9 @@
 		
 		int offsetX = 0, offsetY = 0;
 		
+		float Frame = 0;
+		float animSpeed = 0.3;
+		int frameCount = 20;
 		
 		while (app.isOpen()) {
 			sf::Event e;
@@ -91,7 +122,14 @@
 				if (e.type == sf::Event::Closed) 
 					app.close();
 			}
-		
+			
+			// пример анимации спрайта
+			Frame += animSpeed;
+			if (Frame > frameCount) 
+				Frame -= frameCount;
+				
+			sExplosion.setTextureRect(sf::IntRect(int(Frame) * 256, 0, 256, 256));
+			
 			bool Up = 0.0, Right = 0.0, Down = 0.0, Left = 0.0;
 			
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))    Up = 1;
@@ -131,8 +169,10 @@
 			// x += sin(angle) * speed;
 			// y -= cos(angle) * speed;
 			
-			car[0].speed = speed;
-			car[0].angle = angle;
+			
+			// управление машинкой
+			// car[0].speed = speed;
+			// car[0].angle = angle;
 			
 			for (int i = 0; i < N; i++) 
 				car[i].move();
@@ -153,7 +193,7 @@
 					}
 				}
 			
-			
+			// чтобы экран не вылезал за границы
 			if (car[0].x > 320) offsetX = car[0].x - 320;
 			if (car[0].y > 240) offsetY = car[0].y - 240;
 						
@@ -176,6 +216,8 @@
 				sCar.setColor(colors[i]);
 				app.draw(sCar);
 			}
+			
+			app.draw(sExplosion);
 			
 			app.display();	
 		}
