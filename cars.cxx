@@ -6,7 +6,8 @@
 	#include <cmath>
 	#include <string>
 
-	const int N = 5;
+	const int N = 7;
+	
 	const int Weight = 640; // 960
 	const int Height = 480; // 720
 	
@@ -171,8 +172,8 @@
 			
 			
 			// управление машинкой
-			// car[0].speed = speed;
-			// car[0].angle = angle;
+			car[0].speed = speed;
+			car[0].angle = angle;
 			
 			for (int i = 0; i < N; i++) 
 				car[i].move();
@@ -203,7 +204,7 @@
 			app.draw(sBackground);
 			
 			sf::Color colors[10] = {
-				sf::Color::Red,
+				sf::Color::White,
 				sf::Color::Green, 
 				sf::Color::Magenta,
 				sf::Color::Blue,
